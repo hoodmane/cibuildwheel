@@ -347,20 +347,12 @@ def get_build_identifiers(
         | list[cibuildwheel.macos.PythonConfiguration]
     )
 
-    if platform == "linux":
-        python_configurations = cibuildwheel.linux.get_python_configurations(
-            build_selector, architectures
-        )
-    elif platform == "windows":
-        python_configurations = cibuildwheel.windows.get_python_configurations(
-            build_selector, architectures
-        )
-    elif platform == "macos":
-        python_configurations = cibuildwheel.macos.get_python_configurations(
-            build_selector, architectures
-        )
-    else:
+    if platform != "linux" and platform != "windows" and platform != "macos":
         assert_never(platform)
+
+    python_configurations = cibuildwheel.linux.get_python_configurations(
+        build_selector, architectures
+    )
 
     return [config.identifier for config in python_configurations]
 
